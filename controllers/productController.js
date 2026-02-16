@@ -28,6 +28,7 @@ export async function createProducts(req, res) {
         }) 
      }
 }
+//product 
 export async function getProducts(req, res) {
     try{
         const products = await Product.find()
@@ -41,7 +42,7 @@ export async function getProducts(req, res) {
 } 
 
 
-
+//delete product 
 
 export async function deleteProduct(req,res) {
     if(!isAdmin(req)){

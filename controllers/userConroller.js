@@ -2,6 +2,7 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken";
 
+
 export function createUser (req , res){
     
     
@@ -21,7 +22,7 @@ export function createUser (req , res){
                 res.json({
                     message : "USER CRAEATE SUCCESSFULLY"
             })
-        }
+            } 
         ).catch(
             ()=> {
                 res.json    ({
@@ -30,7 +31,7 @@ export function createUser (req , res){
             }
         )
     }
-export function loginUser (req, res){
+export function loginUser (req, res){ 
 
     User.findOne (
         {
@@ -56,12 +57,21 @@ export function loginUser (req, res){
                             role : user.role,
                             isEmailVerified : user.isEmailVerified,
                         },
-                        "jwt-secret"
+
+                        process.env.JWT_SECRET,
                     )
                     res.json(
                         {
                         message : "Login successful",
                         token : token ,
+                        user : {
+                            email: user.email,
+                            firstName : user.firstName,
+                            lastName : user.lastName,
+                            role : user.role,
+                            isEmailVerified : user.isEmailVerified,
+
+                        }
                     }
                 )
                 }else{
@@ -100,4 +110,19 @@ export function isCustomer(req){
         return false;
     }
     return true;
+}
+
+export function getUser(req,res) {
+    if(req.user == null){
+        res.status(401).json(
+         {
+            message : "Unauthorized user"
+         }
+        )
+        return;
+    }else{
+        res.json(
+           req.user
+        )
+    }
 }
